@@ -1,0 +1,61 @@
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <div>
+            <h1 class="dashboard-title">Portal Settings</h1>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.25rem;">Adjust global variables, configuration constants, and ride fare structures</p>
+        </div>
+    </div>
+
+    <div class="glass-card" style="max-width: 100%; padding: 2rem; border-radius: 16px;">
+        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--text-primary); border-bottom: 1px solid var(--card-border); padding-bottom: 0.75rem;">
+            ⚙️ App Configurations
+        </h3>
+        
+        <form onsubmit="event.preventDefault(); alert('Settings saved successfully!');">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <!-- App Name -->
+                <div class="form-group">
+                    <label class="form-label" for="setting_appname">System App Name</label>
+                    <input type="text" id="setting_appname" class="form-control" value="RideFinder" required>
+                </div>
+
+                <!-- Support Contact -->
+                <div class="form-group">
+                    <label class="form-label" for="setting_phone">Support Helpline Number</label>
+                    <input type="text" id="setting_phone" class="form-control" value="+91 96645 88677" required>
+                </div>
+
+                <!-- Base Fare -->
+                <div class="form-group">
+                    <label class="form-label" for="setting_base_fare">Base Auto Fare (₹)</label>
+                    <input type="number" id="setting_base_fare" class="form-control" value="30" required>
+                </div>
+
+                <!-- Per KM Fare -->
+                <div class="form-group">
+                    <label class="form-label" for="setting_per_km">Per Kilometer Charge (₹)</label>
+                    <input type="number" id="setting_per_km" class="form-control" value="15" required>
+                </div>
+
+                <!-- Search Radius -->
+                <div class="form-group">
+                    <label class="form-label" for="setting_radius">Stops Search Radius (KM)</label>
+                    <input type="number" id="setting_radius" class="form-control" value="5" required>
+                </div>
+
+                <!-- Maintenance Mode -->
+                <div class="form-group" style="display: flex; flex-direction: column; justify-content: center;">
+                    <label class="form-label">System Maintenance Mode</label>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
+                        <input type="checkbox" id="m_mode" style="width: 20px; height: 20px; cursor: pointer; accent-color: var(--accent-primary);">
+                        <label for="m_mode" style="color: var(--text-secondary); cursor: pointer; font-size: 0.95rem;">Enable Maintenance Hold</label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-gradient" style="padding: 0.75rem 2rem; border-radius: 8px;">
+                Save Configuration
+            </button>
+        </form>
+    </div>
+</div>
