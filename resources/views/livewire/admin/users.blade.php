@@ -84,14 +84,19 @@
 
                     <!-- Geo & Time details -->
                     <div style="display: flex; flex-direction: column; gap: 0.35rem; text-align: right; min-width: 180px;">
-                        <div style="font-size: 0.9rem; color: var(--text-secondary); display: flex; align-items: center; justify-content: flex-end; gap: 0.4rem;">
-                            <span style="color: var(--text-muted);">📍 Location:</span> 
+                        <div style="font-size: 0.9rem; color: var(--text-secondary); display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem;">
+                            <div style="display: flex; align-items: center; gap: 0.4rem;">
+                                <span style="color: var(--text-muted);">📍 Location:</span> 
+                                @if ($user->current_location)
+                                    <strong style="color: var(--text-primary);">{{ $user->current_location }}</strong>
+                                @else
+                                    <span style="color: var(--text-muted); font-size: 0.85rem;">Not set</span>
+                                @endif
+                            </div>
                             @if ($user->latitude && $user->longitude)
-                                <span style="font-family: monospace; color: var(--accent-primary); font-weight: 600;">
-                                    {{ number_format($user->latitude, 6) }}, {{ number_format($user->longitude, 6) }}
+                                <span style="font-family: monospace; color: var(--accent-primary); font-size: 0.8rem; font-weight: 600;">
+                                    Coords: {{ number_format($user->latitude, 4) }}, {{ number_format($user->longitude, 4) }}
                                 </span>
-                            @else
-                                <span style="color: var(--text-muted); font-size: 0.85rem;">Unknown</span>
                             @endif
                         </div>
                         <div style="font-size: 0.85rem; color: var(--text-muted);">
