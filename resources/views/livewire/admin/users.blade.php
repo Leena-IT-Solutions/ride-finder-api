@@ -97,6 +97,9 @@
                                 <span style="font-family: monospace; color: var(--accent-primary); font-size: 0.8rem; font-weight: 600;">
                                     Coords: {{ number_format($user->latitude, 4) }}, {{ number_format($user->longitude, 4) }}
                                 </span>
+                                <a href="https://www.google.com/maps/search/?api=1&query={{ $user->latitude }},{{ $user->longitude }}" target="_blank" style="margin-top: 0.25rem; display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); color: #818cf8; padding: 0.25rem 0.6rem; border-radius: 6px; text-decoration: none; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(99, 102, 241, 0.25)'" onmouseout="this.style.background='rgba(99, 102, 241, 0.15)'">
+                                    🗺️ View on Maps
+                                </a>
                             @endif
                         </div>
                         <div style="font-size: 0.85rem; color: var(--text-muted);">
