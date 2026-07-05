@@ -23,9 +23,11 @@ class Dashboard extends Component
             $commitHash = shell_exec('git -c safe.directory="' . $basePath . '" rev-parse --short HEAD');
             $commitMessage = shell_exec('git -c safe.directory="' . $basePath . '" log -1 --pretty=%B');
             $branch = shell_exec('git -c safe.directory="' . $basePath . '" rev-parse --abbrev-ref HEAD');
+            $commitDate = shell_exec('git -c safe.directory="' . $basePath . '" log -1 --date=format:"%Y-%m-%d %H:%M:%S" --pretty=%cd');
+            $commitRelative = shell_exec('git -c safe.directory="' . $basePath . '" log -1 --date=relative --pretty=%cd');
             
             if ($commitHash) {
-                $this->currentCommit = trim($branch) . ' @ ' . trim($commitHash) . ' (' . trim(strtok($commitMessage, "\n")) . ')';
+                $this->currentCommit = trim($branch) . ' @ ' . trim($commitHash) . ' (' . trim(strtok($commitMessage, "\n")) . ') - ' . trim($commitDate) . ' (' . trim($commitRelative) . ')';
             } else {
                 $this->currentCommit = 'Unknown (Git not initialized or not accessible)';
             }
