@@ -153,4 +153,72 @@ class AuthController extends Controller
             'message' => 'Your password has been reset successfully.'
         ]);
     }
+
+    /**
+     * Update User Profile.
+     */
+    public function updateProfile(Request $request)
+    {
+        $user = $request->user();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'mobile_number' => 'required|string|max:15|unique:users,mobile_number,' . $user->id,
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->mobile_number = $request->mobile_number;
+        $user->save();
+
+        return response()->json([
+            'message' => 'Profile updated successfully.',
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * Update Password.
+     */
+    public function updatePassword(Request $request)
+    {
+        $user = $request->user();
+
+        $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:6',
+        ]);
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            throw ValidationException::withMessages([
+                'current_password' => ['The provided current password does not match.'],
+            ]);
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return response()->json([
+            'message' => 'Password updated successfully.'
+        ]);
+    }
+
+    /**
+     * Delete Account.
+     */
+    public function deleteAccount(Request $request)
+    {
+        $user = $request->user();
+        
+        // Revoke all tokens
+        $user->tokens()->delete();
+        
+        // Delete user record
+        $user->delete();
+
+        return response()->json([
+            'message' => 'Account deleted successfully.'
+        ]);
+    }
 }
