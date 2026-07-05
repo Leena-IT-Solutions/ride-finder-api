@@ -10,6 +10,9 @@ class Dashboard extends Component
     public $updateOutput = '';
     public $isUpdating = false;
     public $currentCommit = '';
+    public $currentBranch = '';
+    public $currentCommitMessage = '';
+    public $currentCommitTime = '';
 
     public function mount()
     {
@@ -27,12 +30,21 @@ class Dashboard extends Component
             $commitRelative = shell_exec('git -c safe.directory="' . $basePath . '" log -1 --date=relative --pretty=%cd');
             
             if ($commitHash) {
-                $this->currentCommit = trim($branch) . ' @ ' . trim($commitHash) . ' (' . trim(strtok($commitMessage, "\n")) . ') - ' . trim($commitDate) . ' (' . trim($commitRelative) . ')';
+                $this->currentBranch = trim($branch) . ' @ ' . trim($commitHash);
+                $this->currentCommitMessage = trim(strtok($commitMessage, "\n"));
+                $this->currentCommitTime = trim($commitDate) . ' (' . trim($commitRelative) . ')';
+                $this->currentCommit = $this->currentBranch . ' - ' . $this->currentCommitMessage . ' - ' . $this->currentCommitTime;
             } else {
-                $this->currentCommit = 'Unknown (Git not initialized or not accessible)';
+                $this->currentBranch = 'Unknown';
+                $this->currentCommitMessage = 'Git not initialized or not accessible';
+                $this->currentCommitTime = 'N/A';
+                $this->currentCommit = 'Unknown';
             }
         } catch (\Exception $e) {
-            $this->currentCommit = 'Error loading commit info: ' . $e->getMessage();
+            $this->currentBranch = 'Error';
+            $this->currentCommitMessage = $e->getMessage();
+            $this->currentCommitTime = 'Error';
+            $this->currentCommit = 'Error loading commit info';
         }
     }
 

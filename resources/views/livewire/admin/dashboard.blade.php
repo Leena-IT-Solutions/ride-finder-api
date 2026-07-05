@@ -117,8 +117,19 @@
                         Pull the latest updates from the remote GitHub branch, automatically execute database migrations, and clear cache bundles.
                     </p>
                 </div>
-                <div style="font-size: 0.85rem; color: var(--text-secondary); background: rgba(255, 255, 255, 0.03); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--card-border); font-family: monospace;">
-                    <strong style="color: var(--text-primary);">Current Version:</strong> {{ $currentCommit }}
+                <div style="font-size: 0.82rem; color: var(--text-secondary); background: rgba(255, 255, 255, 0.02); padding: 0.75rem 1.25rem; border-radius: 12px; border: 1px solid var(--card-border); font-family: monospace; display: flex; flex-direction: column; gap: 0.35rem; min-width: 320px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);">
+                    <div>
+                        <strong style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase; display: inline-block; width: 130px;">Current Version:</strong> 
+                        <span style="color: var(--accent-primary); font-weight: 600;">{{ $currentBranch }}</span>
+                    </div>
+                    <div>
+                        <strong style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase; display: inline-block; width: 130px;">Commit:</strong> 
+                        <span style="color: var(--text-primary);">"{{ $currentCommitMessage }}"</span>
+                    </div>
+                    <div>
+                        <strong style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase; display: inline-block; width: 130px;">Timestamp:</strong> 
+                        <span style="color: var(--accent-success);">{{ $currentCommitTime }}</span>
+                    </div>
                 </div>
             </div>
 
