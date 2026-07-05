@@ -90,4 +90,67 @@ class AuthController extends Controller
     {
         return response()->json($request->user());
     }
+
+    /**
+     * Send OTP for Password Reset.
+     */
+    public function forgotPassword(Request $request)
+    {
+        $request->validate([
+            'identifier' => 'required|string',
+        ]);
+
+        $user = User::where('email', $request->identifier)
+            ->orWhere('mobile_number', $request->identifier)
+            ->first();
+
+        if (!$user) {
+            throw ValidationException::withMessages([
+                'identifier' => ['User with this email or mobile number does not exist.'],
+            ]);
+        }
+
+        // Return a fixed testing OTP (123456)
+        $otp = "123456";
+
+        return response()->json([
+            'message' => 'OTP code sent successfully.',
+            'otp' => $otp
+        ]);
+    }
+
+    /**
+     * Reset Password using OTP.
+     */
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'identifier' => 'required|string',
+            'otp' => 'required|string',
+            'password' => 'required|string|min:6',
+        ]);
+
+        $user = User::where('email', $request->identifier)
+            ->orWhere('mobile_number', $request->identifier)
+            ->first();
+
+        if (!$user) {
+            throw ValidationException::withMessages([
+                'identifier' => ['User does not exist.'],
+            ]);
+        }
+
+        if ($request->otp !== '123456') {
+            throw ValidationException::withMessages([
+                'otp' => ['The provided OTP code is invalid.'],
+            ]);
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return response()->json([
+            'message' => 'Your password has been reset successfully.'
+        ]);
+    }
 }
