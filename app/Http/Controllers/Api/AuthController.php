@@ -221,4 +221,28 @@ class AuthController extends Controller
             'message' => 'Account deleted successfully.'
         ]);
     }
+
+    /**
+     * Update User Location.
+     */
+    public function updateLocation(Request $request)
+    {
+        $user = $request->user();
+
+        $request->validate([
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
+            'current_location' => 'required|string|max:255',
+        ]);
+
+        $user->latitude = $request->latitude;
+        $user->longitude = $request->longitude;
+        $user->current_location = $request->current_location;
+        $user->save();
+
+        return response()->json([
+            'message' => 'Location updated successfully.',
+            'user' => $user
+        ]);
+    }
 }
