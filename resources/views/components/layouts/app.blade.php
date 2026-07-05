@@ -26,8 +26,8 @@
             <!-- Sidebar -->
             <aside class="sidebar" id="sidebar">
                 <div class="sidebar-header">
-                    <a href="/" class="sidebar-brand">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-primary)"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
+                    <a href="/" class="sidebar-brand" style="display: flex; align-items: center; gap: 0.65rem;">
+                        <img src="/logo.png" alt="RideFinder Logo" style="width: 28px; height: 28px; border-radius: 6px; box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);">
                         Ride<span class="text-accent" style="-webkit-text-fill-color: initial;">Finder</span>
                     </a>
                     <button class="sidebar-close" onclick="toggleSidebar()">×</button>
@@ -108,8 +108,8 @@
         <!-- Guest Centered Layout -->
         <div class="guest-layout">
             <header class="guest-navbar">
-                <a href="/" class="guest-navbar-brand">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-primary)"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
+                <a href="/" class="guest-navbar-brand" style="display: flex; align-items: center; gap: 0.65rem;">
+                    <img src="/logo.png" alt="RideFinder Logo" style="width: 28px; height: 28px; border-radius: 6px; box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);">
                     Ride<span class="text-accent" style="-webkit-text-fill-color: initial;">Finder</span>
                 </a>
                 <div class="guest-navbar-nav" style="display: flex; gap: 1.5rem;">
