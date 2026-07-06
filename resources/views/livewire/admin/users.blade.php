@@ -132,43 +132,46 @@
 
                     <!-- Driver Documents section -->
                     @if(in_array('driver', $user->roles ?? []) || $user->drivers_license_photo || $user->profile_photo)
-                        <div style="display: flex; align-items: center; gap: 1rem; min-width: 220px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--card-border); padding: 0.5rem 0.75rem; border-radius: 12px;">
+                        <div style="display: flex; align-items: center; gap: 1.25rem; justify-content: center; background: rgba(0, 0, 0, 0.15); border: 1px solid var(--card-border); padding: 0.5rem 1rem; border-radius: 12px; min-width: 210px;">
                             <!-- Profile Photo Thumb -->
                             <div style="display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
-                                <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Profile</span>
+                                <span style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Profile</span>
                                 @if($user->profile_photo)
                                     @if(str_starts_with($user->profile_photo, 'http'))
-                                        <button type="button" wire:click="openPhotoModal('{{ $user->profile_photo }}', 'Profile Photo of {{ addslashes($user->name) }}')" style="background: none; border: none; padding: 0; cursor: pointer; display: block;">
-                                            <img src="{{ $user->profile_photo }}" style="width: 48px; height: 48px; border-radius: 8px; object-fit: cover; border: 1px solid rgba(255, 255, 255, 0.1);" />
+                                        <button type="button" wire:click="openPhotoModal('{{ $user->profile_photo }}', 'Profile Photo of {{ addslashes($user->name) }}')" style="background: none; border: none; padding: 0; cursor: pointer; display: block; transition: all 0.2s ease;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'">
+                                            <img src="{{ $user->profile_photo }}" style="width: 36px; height: 36px; border-radius: 6px; object-fit: cover; border: 1px solid rgba(255, 255, 255, 0.1);" />
                                         </button>
                                     @else
-                                        <div style="width: 48px; height: 48px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; cursor: help;" title="Local File: {{ $user->profile_photo }}">
-                                            <span style="font-size: 1.25rem;">🖼️</span>
+                                        <div style="width: 36px; height: 36px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; cursor: help;" title="Local File: {{ $user->profile_photo }}">
+                                            <span style="font-size: 1rem;">🖼️</span>
                                         </div>
                                     @endif
                                 @else
-                                    <div style="width: 48px; height: 48px; border-radius: 8px; background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;">
-                                        <span style="font-size: 0.7rem; color: var(--text-muted);">None</span>
+                                    <div style="width: 36px; height: 36px; border-radius: 6px; background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;">
+                                        <span style="font-size: 0.65rem; color: var(--text-muted);">None</span>
                                     </div>
                                 @endif
                             </div>
 
+                            <!-- Divider -->
+                            <div style="width: 1px; height: 32px; background: var(--card-border);"></div>
+
                             <!-- License Photo Thumb -->
                             <div style="display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
-                                <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">License</span>
+                                <span style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">License</span>
                                 @if($user->drivers_license_photo)
                                     @if(str_starts_with($user->drivers_license_photo, 'http'))
-                                        <button type="button" wire:click="openPhotoModal('{{ $user->drivers_license_photo }}', 'Driver\'s License of {{ addslashes($user->name) }}')" style="background: none; border: none; padding: 0; cursor: pointer; display: block;">
-                                            <img src="{{ $user->drivers_license_photo }}" style="width: 76px; height: 48px; border-radius: 8px; object-fit: cover; border: 1px solid rgba(255, 255, 255, 0.1);" />
+                                        <button type="button" wire:click="openPhotoModal('{{ $user->drivers_license_photo }}', 'Driver\'s License of {{ addslashes($user->name) }}')" style="background: none; border: none; padding: 0; cursor: pointer; display: block; transition: all 0.2s ease;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'">
+                                            <img src="{{ $user->drivers_license_photo }}" style="width: 58px; height: 36px; border-radius: 6px; object-fit: cover; border: 1px solid rgba(255, 255, 255, 0.1);" />
                                         </button>
                                     @else
-                                        <div style="width: 76px; height: 48px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; cursor: help;" title="Local File: {{ $user->drivers_license_photo }}">
-                                            <span style="font-size: 1.25rem;">🪪</span>
+                                        <div style="width: 58px; height: 36px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; cursor: help;" title="Local File: {{ $user->drivers_license_photo }}">
+                                            <span style="font-size: 1rem;">🪪</span>
                                         </div>
                                     @endif
                                 @else
-                                    <div style="width: 76px; height: 48px; border-radius: 8px; background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;">
-                                        <span style="font-size: 0.7rem; color: var(--text-muted);">None</span>
+                                    <div style="width: 58px; height: 36px; border-radius: 6px; background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;">
+                                        <span style="font-size: 0.65rem; color: var(--text-muted);">None</span>
                                     </div>
                                 @endif
                             </div>
