@@ -26,4 +26,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Vehicle management routes
     Route::post('/user/vehicles', [AuthController::class, 'addVehicle']);
     Route::post('/user/vehicles/{id}/select', [AuthController::class, 'selectVehicle']);
+
+    // Ride Enquiry routes
+    Route::post('/ride-enquiries', [AuthController::class, 'storeEnquiry']);
+    Route::get('/ride-enquiries/recent', [AuthController::class, 'getRecentEnquiries']);
 });

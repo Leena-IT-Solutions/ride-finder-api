@@ -592,4 +592,57 @@ class AuthController extends Controller
             'data' => $drivers
         ]);
     }
+
+    /**
+     * Store a new ride enquiry.
+     */
+    public function storeEnquiry(Request $request)
+    {
+        $request->validate([
+            'driver_id' => 'required|exists:users,id',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
+            'location' => 'nullable|string|max:255',
+        ]);
+
+        $enquiry = \App\Models\RideEnquiry::create([
+            'user_id' => $request->user()->id,
+            'driver_id' => $request->driver_id,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+            'location' => $request->location,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Enquiry logged successfully.',
+            'data' => $enquiry
+        ], 201);
+    }
+
+    /**
+     * Get recent enquiries for the authenticated driver.
+     */
+    public function getRecentEnquiries(Request $request)
+    {
+        $driver = $request->user();
+        if (!in_array('driver', $driver->roles ?? [])) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthorized: Only drivers can fetch enquiries.'
+            ], 403);
+        }
+
+        // Get enquiries from past 48 hours for cleaner listing, ordered by latest
+        $enquiries = \App\Models\RideEnquiry::with('user')
+            ->where('driver_id', $driver->id)
+            ->where('created_at', '>=', now()->subDays(2))
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $enquiries
+        ]);
+    }
 }
