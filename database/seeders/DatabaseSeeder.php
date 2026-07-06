@@ -32,56 +32,29 @@ class DatabaseSeeder extends Seeder
 
         // Seed Stop locations around Sandeep's location in Bengaluru
         Stop::create([
-            'name' => 'Kranthiveera Sangolli Rayanna Railway Station Bus Stop',
-            'type' => 'bus',
-            'city' => 'Bengaluru',
-            'latitude' => 12.974598,
-            'longitude' => 77.590566,
-            'status' => 'active',
-        ]);
-
-        Stop::create([
-            'name' => 'Cubbon Park Auto Stand',
+            'name' => 'Sarvodaya Nagar Main Gate',
             'type' => 'auto',
-            'city' => 'Bengaluru',
-            'latitude' => 12.975598,
-            'longitude' => 77.597566,
+            'city' => 'Ambernath',
+            'latitude' => 19.189387605307818,
+            'longitude' => 73.21953875219381,
             'status' => 'active',
         ]);
 
         Stop::create([
-            'name' => 'MG Road Taxi Stand',
-            'type' => 'taxi',
-            'city' => 'Bengaluru',
-            'latitude' => 12.968598,
-            'longitude' => 77.591566,
+            'name' => 'Sarvodaya Nagar, Phase 3',
+            'type' => 'auto',
+            'city' => 'Ambernath',
+            'latitude' => 19.188054600497303,
+            'longitude' => 73.2208181397075,
             'status' => 'active',
         ]);
 
         Stop::create([
-            'name' => 'UB City Parking Zone',
-            'type' => 'parking',
-            'city' => 'Bengaluru',
-            'latitude' => 12.973598,
-            'longitude' => 77.592566,
-            'status' => 'active',
-        ]);
-
-        Stop::create([
-            'name' => 'Kranthiveera Sangolli Rayanna Railway Station (KSR Bengaluru)',
-            'type' => 'train',
-            'city' => 'Bengaluru',
-            'latitude' => 12.978300,
-            'longitude' => 77.569400,
-            'status' => 'active',
-        ]);
-
-        Stop::create([
-            'name' => 'Nadaprabhu Kempegowda Majestic Metro Station',
-            'type' => 'metro',
-            'city' => 'Bengaluru',
-            'latitude' => 12.975600,
-            'longitude' => 77.572800,
+            'name' => 'Orchid, Sarvodaya Nagar',
+            'type' => 'auto',
+            'city' => 'Ambernath',
+            'latitude' => 19.189818686453105,
+            'longitude' => 73.2207734974165,
             'status' => 'active',
         ]);
     }
