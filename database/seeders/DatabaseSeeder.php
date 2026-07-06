@@ -30,17 +30,6 @@ class DatabaseSeeder extends Seeder
             'longitude' => 77.594566,
         ]);
 
-        // Seed dedicated Manager User for testing
-        User::factory()->create([
-            'name' => 'Manager User',
-            'email' => 'manager@ridefinder.com',
-            'mobile_number' => '9999999999',
-            'roles' => ['manager'],
-            'password' => Hash::make('password'),
-            'latitude' => 12.972000,
-            'longitude' => 77.595000,
-        ]);
-
         // Seed Stop locations around Sandeep's location in Bengaluru
         Stop::create([
             'name' => 'Kranthiveera Sangolli Rayanna Railway Station Bus Stop',
@@ -75,6 +64,24 @@ class DatabaseSeeder extends Seeder
             'city' => 'Bengaluru',
             'latitude' => 12.973598,
             'longitude' => 77.592566,
+            'status' => 'active',
+        ]);
+
+        Stop::create([
+            'name' => 'Kranthiveera Sangolli Rayanna Railway Station (KSR Bengaluru)',
+            'type' => 'train',
+            'city' => 'Bengaluru',
+            'latitude' => 12.978300,
+            'longitude' => 77.569400,
+            'status' => 'active',
+        ]);
+
+        Stop::create([
+            'name' => 'Nadaprabhu Kempegowda Majestic Metro Station',
+            'type' => 'metro',
+            'city' => 'Bengaluru',
+            'latitude' => 12.975600,
+            'longitude' => 77.572800,
             'status' => 'active',
         ]);
     }
