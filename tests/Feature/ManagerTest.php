@@ -100,4 +100,48 @@ class ManagerTest extends TestCase
         $admin->refresh();
         $this->assertContains('admin', $admin->roles);
     }
+
+    public function test_manager_can_create_stop_via_api(): void
+    {
+        $manager = User::factory()->create([
+            'roles' => ['manager'],
+        ]);
+
+        $response = $this->actingAs($manager, 'sanctum')->postJson('/api/stops', [
+            'name' => 'Test Metro Stop',
+            'type' => 'bus',
+            'city' => 'Bengaluru',
+            'latitude' => 12.9715,
+            'longitude' => 77.5945,
+            'status' => 'active',
+        ]);
+
+        $response->assertStatus(201);
+        $response->assertJsonPath('status', 'success');
+        $this->assertDatabaseHas('stops', [
+            'name' => 'Test Metro Stop',
+            'city' => 'Bengaluru',
+        ]);
+    }
+
+    public function test_regular_user_cannot_create_stop_via_api(): void
+    {
+        $user = User::factory()->create([
+            'roles' => ['user'],
+        ]);
+
+        $response = $this->actingAs($user, 'sanctum')->postJson('/api/stops', [
+            'name' => 'Test Forbidden Stop',
+            'type' => 'bus',
+            'city' => 'Bengaluru',
+            'latitude' => 12.9715,
+            'longitude' => 77.5945,
+            'status' => 'active',
+        ]);
+
+        $response->assertStatus(403);
+        $this->assertDatabaseMissing('stops', [
+            'name' => 'Test Forbidden Stop',
+        ]);
+    }
 }

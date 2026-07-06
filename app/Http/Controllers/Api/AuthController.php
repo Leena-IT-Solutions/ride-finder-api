@@ -317,4 +317,44 @@ class AuthController extends Controller
             'data' => $stops
         ]);
     }
+
+    /**
+     * Create a new stop location.
+     */
+    public function storeStop(Request $request)
+    {
+        // 1. Authorize
+        if (!$request->user()->hasAdminAccess()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthorized: Only Admins or Managers can create stops.'
+            ], 403);
+        }
+
+        // 2. Validate
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'type' => 'required|string|in:bus,auto,taxi,parking',
+            'city' => 'required|string|max:255',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'status' => 'required|string|in:active,inactive,maintenance',
+        ]);
+
+        // 3. Create
+        $stop = Stop::create([
+            'name' => $request->name,
+            'type' => $request->type,
+            'city' => $request->city,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+            'status' => $request->status,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Stop location created successfully.',
+            'data' => $stop
+        ], 201);
+    }
 }

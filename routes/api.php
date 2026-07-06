@@ -18,5 +18,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/user/location', [AuthController::class, 'updateLocation']);
     Route::delete('/user', [AuthController::class, 'deleteAccount']);
     Route::get('/stops', [AuthController::class, 'getStops']);
+    Route::post('/stops', [AuthController::class, 'storeStop']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
