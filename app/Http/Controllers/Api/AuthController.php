@@ -289,6 +289,14 @@ class AuthController extends Controller
             $lat = (double)$lat;
             $lng = (double)$lng;
             
+            // Load search radius setting
+            $searchRadius = 5.0; // Default fallback
+            $filePath = storage_path('app/settings.json');
+            if (file_exists($filePath)) {
+                $data = json_decode(file_get_contents($filePath), true);
+                $searchRadius = isset($data['search_radius']) ? (double)$data['search_radius'] : $searchRadius;
+            }
+            
             $stops = $stops->map(function ($stop) use ($lat, $lng) {
                 // Haversine formula
                 $earthRadius = 6371; // Kilometers
@@ -304,7 +312,12 @@ class AuthController extends Controller
                 
                 $stop->distance = round($earthRadius * $c, 2); // Distance in km
                 return $stop;
-            })->sortBy('distance')->values();
+            })
+            ->filter(function ($stop) use ($searchRadius) {
+                return $stop->distance <= $searchRadius;
+            })
+            ->sortBy('distance')
+            ->values();
         } else {
             $stops = $stops->map(function ($stop) {
                 $stop->distance = null;
