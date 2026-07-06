@@ -245,4 +245,25 @@ class AuthController extends Controller
             'user' => $user
         ]);
     }
+
+    /**
+     * Get system config settings.
+     */
+    public function getConfig()
+    {
+        $platform = 'leaflet';
+        $apiKey = '';
+
+        $filePath = storage_path('app/settings.json');
+        if (file_exists($filePath)) {
+            $data = json_decode(file_get_contents($filePath), true);
+            $platform = $data['maps_platform'] ?? $platform;
+            $apiKey = $data['google_maps_api_key'] ?? $apiKey;
+        }
+
+        return response()->json([
+            'maps_platform' => $platform,
+            'google_maps_api_key' => $apiKey,
+        ]);
+    }
 }
