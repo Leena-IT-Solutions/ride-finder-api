@@ -166,11 +166,20 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'mobile_number' => 'required|string|max:15|unique:users,mobile_number,' . $user->id,
+            'roles' => 'nullable|array',
         ]);
 
         $user->name = $request->name;
         $user->email = $request->email;
         $user->mobile_number = $request->mobile_number;
+
+        if ($request->has('roles')) {
+            $newRoles = $request->roles;
+            $currentRoles = $user->roles ?? [];
+            $protectedRoles = array_intersect(['admin', 'manager'], $currentRoles);
+            $user->roles = array_values(array_unique(array_merge($protectedRoles, $newRoles)));
+        }
+
         $user->save();
 
         return response()->json([
