@@ -192,12 +192,19 @@ class AuthController extends Controller
             $user->selected_vehicle_id = $request->selected_vehicle_id;
         }
 
+        $docUpdated = false;
         if ($request->has('profile_photo')) {
             $user->profile_photo = $this->uploadBase64Image($request->profile_photo, 'profiles');
+            $docUpdated = true;
         }
 
         if ($request->has('drivers_license_photo')) {
             $user->drivers_license_photo = $this->uploadBase64Image($request->drivers_license_photo, 'licenses');
+            $docUpdated = true;
+        }
+
+        if ($docUpdated && in_array('driver', $user->roles ?? [])) {
+            $user->driver_verification_status = 'pending';
         }
 
         $user->save();

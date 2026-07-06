@@ -26,6 +26,8 @@ Route::middleware('guest')->group(function () {
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', Dashboard::class)->name('admin.dashboard');
     Route::get('/admin/users', \App\Livewire\Admin\Users::class)->name('admin.users');
+    Route::get('/admin/drivers', \App\Livewire\Admin\Drivers::class)->name('admin.drivers');
+    Route::get('/admin/vehicles', \App\Livewire\Admin\Vehicles::class)->name('admin.vehicles');
     Route::get('/admin/stops', \App\Livewire\Admin\Stops::class)->name('admin.stops');
     Route::get('/admin/settings', \App\Livewire\Admin\Settings::class)->name('admin.settings');
 });

@@ -41,6 +41,12 @@
                     <a href="{{ route('admin.users') }}" class="menu-item {{ request()->routeIs('admin.users') ? 'active' : '' }}">
                         <span class="menu-item-icon">👤</span> Users
                     </a>
+                    <a href="{{ route('admin.drivers') }}" class="menu-item {{ request()->routeIs('admin.drivers') ? 'active' : '' }}">
+                        <span class="menu-item-icon">🪪</span> Drivers
+                    </a>
+                    <a href="{{ route('admin.vehicles') }}" class="menu-item {{ request()->routeIs('admin.vehicles') ? 'active' : '' }}">
+                        <span class="menu-item-icon">🚗</span> Vehicles
+                    </a>
                     <a href="{{ route('admin.stops') }}" class="menu-item {{ request()->routeIs('admin.stops') ? 'active' : '' }}">
                         <span class="menu-item-icon">📍</span> Stop Locations
                     </a>
@@ -79,6 +85,8 @@
                     <div class="topbar-title">
                         @if(request()->routeIs('admin.dashboard')) Dashboard
                         @elseif(request()->routeIs('admin.users')) Users
+                        @elseif(request()->routeIs('admin.drivers')) Drivers Verification
+                        @elseif(request()->routeIs('admin.vehicles')) Vehicles
                         @elseif(request()->routeIs('admin.stops')) Stop Locations
                         @elseif(request()->routeIs('admin.settings')) Portal Settings
                         @else Portal
