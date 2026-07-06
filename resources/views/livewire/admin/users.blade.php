@@ -64,9 +64,20 @@
             <div class="user-card" wire:key="user-{{ $user->id }}">
                 <!-- User Left Profile section -->
                 <div style="display: flex; align-items: center; gap: 1.25rem; flex: 1; min-width: 250px;">
-                    <div style="width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.25rem; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25); flex-shrink: 0;">
-                        {{ strtoupper(substr($user->name, 0, 1)) }}
-                    </div>
+                    @if($user->profile_photo)
+                        @if(str_starts_with($user->profile_photo, 'http'))
+                            <img src="{{ $user->profile_photo }}" style="width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-primary); flex-shrink: 0; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);" alt="Profile Photo" />
+                        @else
+                            <div style="width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; flex-shrink: 0; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);" title="Local Path: {{ $user->profile_photo }}">
+                                <span>📱 Local</span>
+                                <span style="font-size: 0.5rem; max-width: 48px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ basename($user->profile_photo) }}</span>
+                            </div>
+                        @endif
+                    @else
+                        <div style="width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.25rem; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25); flex-shrink: 0;">
+                            {{ strtoupper(substr($user->name, 0, 1)) }}
+                        </div>
+                    @endif
                     <div style="min-width: 0;">
                         <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.35rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                             {{ $user->name }}
@@ -103,9 +114,9 @@
                 </div>
 
                 <!-- User Details section -->
-                <div style="display: flex; gap: 2rem; flex: 2; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+                <div style="display: flex; gap: 2.5rem; flex: 2; flex-wrap: wrap; justify-content: space-between; align-items: center;">
                     <!-- Contact details -->
-                    <div style="display: flex; flex-direction: column; gap: 0.35rem; min-width: 200px;">
+                    <div style="display: flex; flex-direction: column; gap: 0.35rem; min-width: 180px;">
                         <div style="font-size: 0.95rem; color: var(--text-secondary); display: flex; align-items: center; gap: 0.4rem;">
                             <span style="color: var(--text-muted);">📞 Mobile:</span> <strong>{{ $user->mobile_number }}</strong>
                         </div>
@@ -118,6 +129,51 @@
                             @endif
                         </div>
                     </div>
+
+                    <!-- Driver Documents section -->
+                    @if(in_array('driver', $user->roles ?? []) || $user->drivers_license_photo || $user->profile_photo)
+                        <div style="display: flex; align-items: center; gap: 1rem; min-width: 220px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--card-border); padding: 0.5rem 0.75rem; border-radius: 12px;">
+                            <!-- Profile Photo Thumb -->
+                            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
+                                <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Profile</span>
+                                @if($user->profile_photo)
+                                    @if(str_starts_with($user->profile_photo, 'http'))
+                                        <a href="{{ $user->profile_photo }}" target="_blank" style="display: block;">
+                                            <img src="{{ $user->profile_photo }}" style="width: 48px; height: 48px; border-radius: 8px; object-fit: cover; border: 1px solid rgba(255, 255, 255, 0.1);" />
+                                        </a>
+                                    @else
+                                        <div style="width: 48px; height: 48px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; cursor: help;" title="Local File: {{ $user->profile_photo }}">
+                                            <span style="font-size: 1.25rem;">🖼️</span>
+                                        </div>
+                                    @endif
+                                @else
+                                    <div style="width: 48px; height: 48px; border-radius: 8px; background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;">
+                                        <span style="font-size: 0.7rem; color: var(--text-muted);">None</span>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <!-- License Photo Thumb -->
+                            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
+                                <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">License</span>
+                                @if($user->drivers_license_photo)
+                                    @if(str_starts_with($user->drivers_license_photo, 'http'))
+                                        <a href="{{ $user->drivers_license_photo }}" target="_blank" style="display: block;">
+                                            <img src="{{ $user->drivers_license_photo }}" style="width: 76px; height: 48px; border-radius: 8px; object-fit: cover; border: 1px solid rgba(255, 255, 255, 0.1);" />
+                                        </a>
+                                    @else
+                                        <div style="width: 76px; height: 48px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; cursor: help;" title="Local File: {{ $user->drivers_license_photo }}">
+                                            <span style="font-size: 1.25rem;">🪪</span>
+                                        </div>
+                                    @endif
+                                @else
+                                    <div style="width: 76px; height: 48px; border-radius: 8px; background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;">
+                                        <span style="font-size: 0.7rem; color: var(--text-muted);">None</span>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
 
                     <!-- Geo & Time details -->
                     <div style="display: flex; flex-direction: column; gap: 0.35rem; text-align: right; min-width: 180px;">
