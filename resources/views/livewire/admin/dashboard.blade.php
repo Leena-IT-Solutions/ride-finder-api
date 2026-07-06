@@ -27,6 +27,17 @@
                 </div>
             </div>
 
+            <!-- Managers Stats -->
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-orange" style="background: rgba(249, 115, 22, 0.12); color: #fb923c;">
+                    <span>💼</span>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value">{{ $stats['total_managers'] }}</span>
+                    <span class="stat-label">Managers</span>
+                </div>
+            </div>
+
             <!-- Drivers Stats -->
             <div class="stat-card">
                 <div class="stat-icon stat-icon-blue">

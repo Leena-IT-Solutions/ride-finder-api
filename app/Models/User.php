@@ -27,6 +27,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if the user is a manager.
+     */
+    public function isManager(): bool
+    {
+        return in_array('manager', $this->roles ?? []);
+    }
+
+    /**
+     * Check if the user has administrative/management panel access.
+     */
+    public function hasAdminAccess(): bool
+    {
+        return $this->isAdmin() || $this->isManager();
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

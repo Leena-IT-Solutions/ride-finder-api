@@ -67,4 +67,35 @@ class Users extends Component
             'hasMore' => $totalMatches > count($users)
         ])->layout('components.layouts.app', ['title' => 'Users - RideFinder']);
     }
+
+    /**
+     * Toggle a specific role for a user.
+     */
+    public function toggleRole($userId, $role)
+    {
+        $user = User::find($userId);
+        if (!$user) {
+            return;
+        }
+
+        // Prevent self-revoking admin role
+        if ($user->id == auth()->id() && $role === 'admin') {
+            session()->flash('error', 'You cannot revoke your own Administrator role to avoid lockout.');
+            return;
+        }
+
+        $roles = $user->roles ?? [];
+        if (in_array($role, $roles)) {
+            // Revoke
+            $roles = array_values(array_filter($roles, fn($r) => $r !== $role));
+        } else {
+            // Assign
+            $roles[] = $role;
+        }
+
+        $user->roles = $roles;
+        $user->save();
+
+        session()->flash('success', "Roles updated successfully for {$user->name}.");
+    }
 }

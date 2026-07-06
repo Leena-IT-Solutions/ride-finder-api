@@ -10,6 +10,19 @@
         </span>
     </div>
 
+    <!-- Flash Messages -->
+    @if (session()->has('success'))
+        <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: #a7f3d0; padding: 0.75rem 1.25rem; border-radius: 12px; margin-bottom: 1.25rem; font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+            <span>✅</span> {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session()->has('error'))
+        <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; padding: 0.75rem 1.25rem; border-radius: 12px; margin-bottom: 1.25rem; font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+            <span>⚠️</span> {{ session('error') }}
+        </div>
+    @endif
+
     <!-- Filters & Search Bar -->
     <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 1.25rem; margin-bottom: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; justify-content: space-between; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
         <!-- Search Input -->
@@ -26,6 +39,7 @@
                 <select wire:model.live="roleFilter" class="form-control" style="width: 130px; margin-bottom: 0; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-primary); cursor: pointer; padding: 0.5rem 0.75rem;">
                     <option value="" style="background: #0f172a; color: white;">All Roles</option>
                     <option value="admin" style="background: #0f172a; color: white;">Admin</option>
+                    <option value="manager" style="background: #0f172a; color: white;">Manager</option>
                     <option value="driver" style="background: #0f172a; color: white;">Driver</option>
                     <option value="user" style="background: #0f172a; color: white;">User</option>
                 </select>
@@ -60,6 +74,29 @@
                         <div style="display: flex; gap: 0.35rem; flex-wrap: wrap; align-items: center;">
                             @foreach ($user->roles ?? [] as $role)
                                 <span class="badge badge-{{ strtolower($role) }}">{{ $role }}</span>
+                            @endforeach
+                        </div>
+                        
+                        <!-- Toggle Roles buttons -->
+                        <div style="margin-top: 0.75rem; display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">
+                            <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-right: 0.25rem;">Toggle Role:</span>
+                            @foreach(['admin', 'manager', 'driver', 'user'] as $roleName)
+                                @php
+                                    $hasRole = in_array($roleName, $user->roles ?? []);
+                                @endphp
+                                <button 
+                                    wire:click="toggleRole({{ $user->id }}, '{{ $roleName }}')" 
+                                    class="badge" 
+                                    style="cursor: pointer; transition: all 0.25s ease; font-size: 0.65rem; padding: 0.15rem 0.5rem; text-transform: capitalize;
+                                           background: {{ $hasRole ? 'rgba(99, 102, 241, 0.22)' : 'rgba(255, 255, 255, 0.03)' }}; 
+                                           color: {{ $hasRole ? '#c7d2fe' : 'var(--text-muted)' }}; 
+                                           border: 1px solid {{ $hasRole ? 'rgba(99, 102, 241, 0.45)' : 'rgba(255, 255, 255, 0.08)' }};"
+                                    onmouseover="this.style.background='{{ $hasRole ? 'rgba(239, 68, 68, 0.15)' : 'rgba(99, 102, 241, 0.15)' }}'; this.style.color='{{ $hasRole ? '#f87171' : '#c7d2fe' }}'; this.style.borderColor='{{ $hasRole ? 'rgba(239, 68, 68, 0.4)' : 'rgba(99, 102, 241, 0.5)' }}';"
+                                    onmouseout="this.style.background='{{ $hasRole ? 'rgba(99, 102, 241, 0.22)' : 'rgba(255, 255, 255, 0.03)' }}'; this.style.color='{{ $hasRole ? '#c7d2fe' : 'var(--text-muted)' }}'; this.style.borderColor='{{ $hasRole ? 'rgba(99, 102, 241, 0.45)' : 'rgba(255, 255, 255, 0.08)' }}';"
+                                    title="{{ $hasRole ? 'Click to revoke ' . $roleName : 'Click to assign ' . $roleName }}"
+                                >
+                                    {{ $hasRole ? '✓' : '+' }} {{ $roleName }}
+                                </button>
                             @endforeach
                         </div>
                     </div>

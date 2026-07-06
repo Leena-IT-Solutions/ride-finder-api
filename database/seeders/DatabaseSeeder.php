@@ -24,10 +24,21 @@ class DatabaseSeeder extends Seeder
             'name' => 'Sandeep Rathod',
             'email' => 'sandeep198558@yahoo.com',
             'mobile_number' => '9664588677',
-            'roles' => ['admin', 'driver', 'user'],
+            'roles' => ['admin', 'manager', 'driver', 'user'],
             'password' => Hash::make('password'),
             'latitude' => 12.971598,
             'longitude' => 77.594566,
+        ]);
+
+        // Seed dedicated Manager User for testing
+        User::factory()->create([
+            'name' => 'Manager User',
+            'email' => 'manager@ridefinder.com',
+            'mobile_number' => '9999999999',
+            'roles' => ['manager'],
+            'password' => Hash::make('password'),
+            'latitude' => 12.972000,
+            'longitude' => 77.595000,
         ]);
 
         // Seed Stop locations around Sandeep's location in Bengaluru

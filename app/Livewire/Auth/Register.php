@@ -44,13 +44,13 @@ class Register extends Component
             'password' => Hash::make($this->password),
         ]);
 
-        if ($user->isAdmin()) {
+        if ($user->hasAdminAccess()) {
             auth()->login($user);
             return redirect()->route('admin.dashboard');
         }
 
-        // If the registered user is a driver or user, redirect to login showing that access is restricted to Admins
-        return redirect()->route('login')->with('success', "Registration successful for {$user->name}! Please log in via the mobile application, as web access is restricted to Admins.");
+        // If the registered user is a driver or user, redirect to login showing that access is restricted to Admins and Managers
+        return redirect()->route('login')->with('success', "Registration successful for {$user->name}! Please log in via the mobile application, as web access is restricted to Admins and Managers.");
     }
 
     public function render()

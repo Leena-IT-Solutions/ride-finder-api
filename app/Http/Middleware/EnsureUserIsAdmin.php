@@ -19,12 +19,12 @@ class EnsureUserIsAdmin
             return redirect()->route('login')->with('error', 'Please log in to access this page.');
         }
 
-        if (!auth()->user()->isAdmin()) {
+        if (!auth()->user()->hasAdminAccess()) {
             auth()->logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            return redirect()->route('login')->with('error', 'Access Denied: Only Admin roles are permitted to access this panel.');
+            return redirect()->route('login')->with('error', 'Access Denied: Only Admin or Manager roles are permitted to access this panel.');
         }
 
         return $next($request);

@@ -89,6 +89,7 @@ class Dashboard extends Component
             'total_users' => User::whereJsonContains('roles', 'user')->count(),
             'total_drivers' => User::whereJsonContains('roles', 'driver')->count(),
             'total_admins' => User::whereJsonContains('roles', 'admin')->count(),
+            'total_managers' => User::whereJsonContains('roles', 'manager')->count(),
             'bus_stops' => Stop::where('type', 'bus')->count(),
             'auto_stops' => Stop::where('type', 'auto')->count(),
             'taxi_stands' => Stop::where('type', 'taxi')->count(),
