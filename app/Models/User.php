@@ -61,5 +61,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Vehicle::class);
     }
+
+    public function selectedVehicle(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Vehicle::class, 'selected_vehicle_id');
+    }
 }
 

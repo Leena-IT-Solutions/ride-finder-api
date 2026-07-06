@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/user', [AuthController::class, 'deleteAccount']);
     Route::get('/stops', [AuthController::class, 'getStops']);
     Route::post('/stops', [AuthController::class, 'storeStop']);
+    Route::get('/drivers/active', [AuthController::class, 'getActiveDrivers']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // Vehicle management routes

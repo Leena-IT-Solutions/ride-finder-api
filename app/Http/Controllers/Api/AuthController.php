@@ -524,4 +524,21 @@ class AuthController extends Controller
             return $base64String;
         }
     }
+
+    /**
+     * Get list of active online drivers and their selected vehicle.
+     */
+    public function getActiveDrivers(Request $request)
+    {
+        $drivers = \App\Models\User::where('is_online', true)
+            ->whereNotNull('selected_vehicle_id')
+            ->where('id', '!=', $request->user()->id)
+            ->with('selectedVehicle')
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $drivers
+        ]);
+    }
 }
