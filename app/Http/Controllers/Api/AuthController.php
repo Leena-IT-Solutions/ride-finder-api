@@ -344,10 +344,14 @@ class AuthController extends Controller
             ], 403);
         }
 
+
+
+
+
         // 2. Validate
         $request->validate([
             'name' => 'required|string|max:255',
-            'type' => 'required|string|in:bus,auto,taxi,parking',
+            'type' => 'required|string|in:bus,auto,taxi,parking,train,metro',
             'city' => 'required|string|max:255',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',

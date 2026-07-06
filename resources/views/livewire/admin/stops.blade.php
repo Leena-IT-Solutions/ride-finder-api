@@ -47,10 +47,11 @@
                     <option value="auto" style="background: #0f172a; color: white;">🛺 Auto Stand</option>
                     <option value="taxi" style="background: #0f172a; color: white;">🚕 Taxi Stand</option>
                     <option value="parking" style="background: #0f172a; color: white;">🅿️ Parking Location</option>
+                    <option value="train" style="background: #0f172a; color: white;">🚆 Train Station</option>
+                    <option value="metro" style="background: #0f172a; color: white;">🚇 Metro Station</option>
                 </select>
             </div>
 
-            <!-- Page Row size selector -->
             <div style="display: flex; align-items: center; gap: 0.5rem;">
                 <label style="color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; white-space: nowrap;">Rows to show:</label>
                 <select wire:model.live="perPage" class="form-control" style="width: 80px; margin-bottom: 0; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-primary); cursor: pointer; padding: 0.5rem 0.5rem;">
@@ -76,6 +77,10 @@
                             🛺
                         @elseif ($stop['type'] === 'taxi')
                             🚕
+                        @elseif ($stop['type'] === 'train')
+                            🚆
+                        @elseif ($stop['type'] === 'metro')
+                            🚇
                         @else
                             🅿️
                         @endif
@@ -97,17 +102,22 @@
                                 <span class="badge badge-user" style="background: rgba(16, 185, 129, 0.15); color: #a7f3d0; border: 1px solid rgba(16, 185, 129, 0.3);">
                                     Taxi Stand
                                 </span>
-                            @else
+                            @elseif ($stop['type'] === 'parking')
                                 <span class="badge" style="background: rgba(59, 130, 246, 0.15); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.3);">
                                     Parking Location
                                 </span>
+                            @elseif ($stop['type'] === 'train')
+                                <span class="badge" style="background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3);">
+                                    Train Station
+                                </span>
+                            @elseif ($stop['type'] === 'metro')
+                                <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #a7f3d0; border: 1px solid rgba(16, 185, 129, 0.3);">
+                                    Metro Station
+                                </span>
                             @endif
-
-                            <!-- City Badge -->
                             <span class="badge" style="background: rgba(255, 255, 255, 0.05); color: var(--text-secondary); border: 1px solid rgba(255, 255, 255, 0.08); text-transform: none;">
                                 📍 {{ $stop['city'] }}
                             </span>
-                            
                             <!-- Status Badge -->
                             @if ($stop['status'] === 'active')
                                 <span class="badge badge-success" style="background: rgba(16, 185, 129, 0.15); color: #a7f3d0; border: 1px solid rgba(16, 185, 129, 0.3);">
@@ -206,7 +216,6 @@
                         <input type="text" id="stop_name" wire:model="name" class="form-control" placeholder="e.g., Majestic Bus Stand" required>
                         @error('name') <span class="form-error">❌ {{ $message }}</span> @enderror
                     </div>
-
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                         <!-- Stop Type -->
                         <div class="form-group">
@@ -216,9 +225,12 @@
                                 <option value="auto">🛺 Auto Stand</option>
                                 <option value="taxi">🚕 Taxi Stand</option>
                                 <option value="parking">🅿️ Parking Location</option>
+                                <option value="train">🚆 Train Station</option>
+                                <option value="metro">🚇 Metro Station</option>
                             </select>
                             @error('type') <span class="form-error">❌ {{ $message }}</span> @enderror
                         </div>
+
 
                         <!-- City -->
                         <div class="form-group">

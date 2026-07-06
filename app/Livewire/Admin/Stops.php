@@ -25,11 +25,15 @@ class Stops extends Component
     public $isDeleteOpen = false;
     public $deletingStopId = null;
 
+
+
+
+
     protected function rules()
     {
         return [
             'name' => 'required|string|max:255',
-            'type' => 'required|in:bus,auto,taxi,parking',
+            'type' => 'required|in:bus,auto,taxi,parking,train,metro',
             'city' => 'required|string|max:255',
             'latitude' => 'required|numeric|between:-90,90',
             'longitude' => 'required|numeric|between:-180,180',
