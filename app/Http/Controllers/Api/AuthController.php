@@ -191,11 +191,11 @@ class AuthController extends Controller
         }
 
         if ($request->has('profile_photo')) {
-            $user->profile_photo = $request->profile_photo;
+            $user->profile_photo = $this->uploadBase64Image($request->profile_photo, 'profiles');
         }
 
         if ($request->has('drivers_license_photo')) {
-            $user->drivers_license_photo = $request->drivers_license_photo;
+            $user->drivers_license_photo = $this->uploadBase64Image($request->drivers_license_photo, 'licenses');
         }
 
         $user->save();
@@ -461,5 +461,44 @@ class AuthController extends Controller
             'message' => 'Stop location created successfully.',
             'data' => $stop
         ], 201);
+    }
+
+    /**
+     * Decode and save a base64 encoded image to disk.
+     */
+    private function uploadBase64Image($base64String, $folder = 'uploads')
+    {
+        if (filter_var($base64String, FILTER_VALIDATE_URL) || str_starts_with($base64String, 'http')) {
+            return $base64String;
+        }
+
+        if (str_starts_with($base64String, '/') || str_starts_with($base64String, 'file://')) {
+            return $base64String;
+        }
+
+        try {
+            if (preg_match('/^data:image\/(\w+);base64,/', $base64String, $type)) {
+                $data = substr($base64String, strpos($base64String, ',') + 1);
+                $extension = strtolower($type[1]);
+            } else {
+                $data = $base64String;
+                $extension = 'jpg';
+            }
+
+            $decoded = base64_decode($data);
+            if ($decoded === false) {
+                return $base64String;
+            }
+
+            $fileName = uniqid() . '.' . $extension;
+            $path = $folder . '/' . $fileName;
+
+            \Illuminate\Support\Facades\Storage::disk('public')->put($path, $decoded);
+
+            return asset('storage/' . $path);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Base64 Upload Error: ' . $e->getMessage());
+            return $base64String;
+        }
     }
 }
