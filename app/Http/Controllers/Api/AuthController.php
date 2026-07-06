@@ -350,6 +350,7 @@ class AuthController extends Controller
 
         $user->is_online = $request->is_online;
         $user->save();
+        $user->load('vehicles');
 
         return response()->json([
             'message' => 'Online status updated successfully.',
