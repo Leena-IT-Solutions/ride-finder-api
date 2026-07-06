@@ -167,6 +167,8 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'mobile_number' => 'required|string|max:15|unique:users,mobile_number,' . $user->id,
             'roles' => 'nullable|array',
+            'vehicles' => 'nullable|array',
+            'selected_vehicle_id' => 'nullable|string',
         ]);
 
         $user->name = $request->name;
@@ -178,6 +180,14 @@ class AuthController extends Controller
             $currentRoles = $user->roles ?? [];
             $protectedRoles = array_intersect(['admin', 'manager'], $currentRoles);
             $user->roles = array_values(array_unique(array_merge($protectedRoles, $newRoles)));
+        }
+
+        if ($request->has('vehicles')) {
+            $user->vehicles = $request->vehicles;
+        }
+
+        if ($request->has('selected_vehicle_id')) {
+            $user->selected_vehicle_id = $request->selected_vehicle_id;
         }
 
         $user->save();
