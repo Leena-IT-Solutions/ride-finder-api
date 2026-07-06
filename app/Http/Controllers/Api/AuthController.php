@@ -336,6 +336,26 @@ class AuthController extends Controller
     }
 
     /**
+     * Update User Online Status.
+     */
+    public function updateOnlineStatus(Request $request)
+    {
+        $user = $request->user();
+
+        $request->validate([
+            'is_online' => 'required|boolean',
+        ]);
+
+        $user->is_online = $request->is_online;
+        $user->save();
+
+        return response()->json([
+            'message' => 'Online status updated successfully.',
+            'user' => $user
+        ]);
+    }
+
+    /**
      * Get system config settings.
      */
     public function getConfig()
