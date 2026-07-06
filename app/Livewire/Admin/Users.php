@@ -12,6 +12,25 @@ class Users extends Component
     public $perPage = 5;
     public $loadedCount;
 
+    // Modal state properties
+    public $activeModalPhoto = null;
+    public $activeModalTitle = '';
+    public $isPhotoModalOpen = false;
+
+    public function openPhotoModal($photoUrl, $title)
+    {
+        $this->activeModalPhoto = $photoUrl;
+        $this->activeModalTitle = $title;
+        $this->isPhotoModalOpen = true;
+    }
+
+    public function closePhotoModal()
+    {
+        $this->isPhotoModalOpen = false;
+        $this->activeModalPhoto = null;
+        $this->activeModalTitle = '';
+    }
+
     public function mount()
     {
         $this->loadedCount = (int)$this->perPage;

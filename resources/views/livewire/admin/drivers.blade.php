@@ -94,9 +94,9 @@
                     <div style="display: flex; flex-direction: column; gap: 0.25rem;">
                         <span style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Profile Photo</span>
                         @if($driver->profile_photo)
-                            <a href="{{ $driver->profile_photo }}" target="_blank" style="display: inline-block;">
+                            <button type="button" wire:click="openPhotoModal('{{ $driver->profile_photo }}', 'Profile Photo of {{ addslashes($driver->name) }}')" style="background: none; border: none; padding: 0; cursor: pointer; display: inline-block;">
                                 <img src="{{ $driver->profile_photo }}" style="width: 44px; height: 44px; border-radius: 8px; object-fit: cover; border: 1px solid var(--card-border); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
-                            </a>
+                            </button>
                         @else
                             <span style="font-size: 0.8rem; color: var(--text-muted); font-style: italic;">Not uploaded</span>
                         @endif
@@ -106,9 +106,9 @@
                     <div style="display: flex; flex-direction: column; gap: 0.25rem;">
                         <span style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Driver's License</span>
                         @if($driver->drivers_license_photo)
-                            <a href="{{ $driver->drivers_license_photo }}" target="_blank" style="display: inline-block;">
+                            <button type="button" wire:click="openPhotoModal('{{ $driver->drivers_license_photo }}', 'Driver\'s License of {{ addslashes($driver->name) }}')" style="background: none; border: none; padding: 0; cursor: pointer; display: inline-block;">
                                 <img src="{{ $driver->drivers_license_photo }}" style="width: 70px; height: 44px; border-radius: 8px; object-fit: cover; border: 1px solid var(--card-border); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" />
-                            </a>
+                            </button>
                         @else
                             <span style="font-size: 0.8rem; color: var(--text-muted); font-style: italic;">Not uploaded</span>
                         @endif
@@ -172,6 +172,24 @@
             <button wire:click="loadMore" class="btn btn-secondary" style="padding: 0.75rem 2rem; border-radius: 12px; font-weight: 600; border: 1px solid var(--card-border); background: var(--card-bg); color: var(--text-primary); cursor: pointer;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='var(--card-bg)'">
                 Load More Drivers
             </button>
+        </div>
+    @endif
+
+    <!-- Photo Modal -->
+    @if($isPhotoModalOpen)
+        <div style="position: fixed; inset: 0; background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 1.5rem;" wire:click.self="closePhotoModal">
+            <div class="glass-card" style="max-width: 700px; padding: 2rem; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); width: 100%; position: relative; text-align: center;">
+                <!-- Close Button -->
+                <button type="button" wire:click="closePhotoModal" style="position: absolute; top: 1.25rem; right: 1.25rem; background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-muted)'">&times;</button>
+                
+                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1.5rem; text-align: left;">
+                    {{ $activeModalTitle }}
+                </h3>
+
+                <div style="background: rgba(0, 0, 0, 0.2); border-radius: 12px; padding: 0.5rem; display: inline-block; max-width: 100%; box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);">
+                    <img src="{{ $activeModalPhoto }}" style="max-width: 100%; max-height: 70vh; border-radius: 8px; object-fit: contain; display: block;" />
+                </div>
+            </div>
         </div>
     @endif
 </div>

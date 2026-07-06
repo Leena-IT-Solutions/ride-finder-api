@@ -138,9 +138,9 @@
                                 <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Profile</span>
                                 @if($user->profile_photo)
                                     @if(str_starts_with($user->profile_photo, 'http'))
-                                        <a href="{{ $user->profile_photo }}" target="_blank" style="display: block;">
+                                        <button type="button" wire:click="openPhotoModal('{{ $user->profile_photo }}', 'Profile Photo of {{ addslashes($user->name) }}')" style="background: none; border: none; padding: 0; cursor: pointer; display: block;">
                                             <img src="{{ $user->profile_photo }}" style="width: 48px; height: 48px; border-radius: 8px; object-fit: cover; border: 1px solid rgba(255, 255, 255, 0.1);" />
-                                        </a>
+                                        </button>
                                     @else
                                         <div style="width: 48px; height: 48px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; cursor: help;" title="Local File: {{ $user->profile_photo }}">
                                             <span style="font-size: 1.25rem;">🖼️</span>
@@ -158,9 +158,9 @@
                                 <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">License</span>
                                 @if($user->drivers_license_photo)
                                     @if(str_starts_with($user->drivers_license_photo, 'http'))
-                                        <a href="{{ $user->drivers_license_photo }}" target="_blank" style="display: block;">
+                                        <button type="button" wire:click="openPhotoModal('{{ $user->drivers_license_photo }}', 'Driver\'s License of {{ addslashes($user->name) }}')" style="background: none; border: none; padding: 0; cursor: pointer; display: block;">
                                             <img src="{{ $user->drivers_license_photo }}" style="width: 76px; height: 48px; border-radius: 8px; object-fit: cover; border: 1px solid rgba(255, 255, 255, 0.1);" />
-                                        </a>
+                                        </button>
                                     @else
                                         <div style="width: 76px; height: 48px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; cursor: help;" title="Local File: {{ $user->drivers_license_photo }}">
                                             <span style="font-size: 1.25rem;">🪪</span>
@@ -216,6 +216,24 @@
             <button wire:click="loadMore" class="btn-gradient" style="padding: 0.75rem 2.5rem; border-radius: 10px; display: flex; align-items: center; gap: 0.5rem;">
                 <span style="font-size: 1.1rem;">🔄</span> Load More Users
             </button>
+        </div>
+    @endif
+
+    <!-- Photo Modal -->
+    @if($isPhotoModalOpen)
+        <div style="position: fixed; inset: 0; background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 1.5rem;" wire:click.self="closePhotoModal">
+            <div class="glass-card" style="max-width: 700px; padding: 2rem; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); width: 100%; position: relative; text-align: center;">
+                <!-- Close Button -->
+                <button type="button" wire:click="closePhotoModal" style="position: absolute; top: 1.25rem; right: 1.25rem; background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-muted)'">&times;</button>
+                
+                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1.5rem; text-align: left;">
+                    {{ $activeModalTitle }}
+                </h3>
+
+                <div style="background: rgba(0, 0, 0, 0.2); border-radius: 12px; padding: 0.5rem; display: inline-block; max-width: 100%; box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);">
+                    <img src="{{ $activeModalPhoto }}" style="max-width: 100%; max-height: 70vh; border-radius: 8px; object-fit: contain; display: block;" />
+                </div>
+            </div>
         </div>
     @endif
 </div>
