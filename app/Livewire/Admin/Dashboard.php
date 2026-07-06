@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Models\User;
+use App\Models\Stop;
 use Livewire\Component;
 
 class Dashboard extends Component
@@ -88,10 +89,10 @@ class Dashboard extends Component
             'total_users' => User::whereJsonContains('roles', 'user')->count(),
             'total_drivers' => User::whereJsonContains('roles', 'driver')->count(),
             'total_admins' => User::whereJsonContains('roles', 'admin')->count(),
-            'bus_stops' => 2,
-            'auto_stops' => 1,
-            'taxi_stands' => 1,
-            'parkings' => 1,
+            'bus_stops' => Stop::where('type', 'bus')->count(),
+            'auto_stops' => Stop::where('type', 'auto')->count(),
+            'taxi_stands' => Stop::where('type', 'taxi')->count(),
+            'parkings' => Stop::where('type', 'parking')->count(),
         ];
 
         return view('livewire.admin.dashboard', compact('stats'))

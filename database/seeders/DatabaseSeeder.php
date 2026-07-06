@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Stop;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -27,6 +28,43 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'latitude' => 12.971598,
             'longitude' => 77.594566,
+        ]);
+
+        // Seed Stop locations around Sandeep's location in Bengaluru
+        Stop::create([
+            'name' => 'Kranthiveera Sangolli Rayanna Railway Station Bus Stop',
+            'type' => 'bus',
+            'city' => 'Bengaluru',
+            'latitude' => 12.974598,
+            'longitude' => 77.590566,
+            'status' => 'active',
+        ]);
+
+        Stop::create([
+            'name' => 'Cubbon Park Auto Stand',
+            'type' => 'auto',
+            'city' => 'Bengaluru',
+            'latitude' => 12.975598,
+            'longitude' => 77.597566,
+            'status' => 'active',
+        ]);
+
+        Stop::create([
+            'name' => 'MG Road Taxi Stand',
+            'type' => 'taxi',
+            'city' => 'Bengaluru',
+            'latitude' => 12.968598,
+            'longitude' => 77.591566,
+            'status' => 'active',
+        ]);
+
+        Stop::create([
+            'name' => 'UB City Parking Zone',
+            'type' => 'parking',
+            'city' => 'Bengaluru',
+            'latitude' => 12.973598,
+            'longitude' => 77.592566,
+            'status' => 'active',
         ]);
     }
 }

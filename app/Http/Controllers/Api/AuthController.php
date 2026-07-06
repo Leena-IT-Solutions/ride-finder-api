@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Stop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -264,6 +265,56 @@ class AuthController extends Controller
         return response()->json([
             'maps_platform' => $platform,
             'google_maps_api_key' => $apiKey,
+        ]);
+    }
+
+    /**
+     * Get stop locations filtered by type and sorted by distance.
+     */
+    public function getStops(Request $request)
+    {
+        $lat = $request->query('latitude');
+        $lng = $request->query('longitude');
+        $type = $request->query('type');
+
+        $query = Stop::where('status', 'active');
+
+        if ($type && $type !== 'All' && $type !== 'all') {
+            $query->where('type', strtolower($type));
+        }
+
+        $stops = $query->get();
+
+        if ($lat !== null && $lng !== null) {
+            $lat = (double)$lat;
+            $lng = (double)$lng;
+            
+            $stops = $stops->map(function ($stop) use ($lat, $lng) {
+                // Haversine formula
+                $earthRadius = 6371; // Kilometers
+                
+                $latDelta = deg2rad($stop->latitude - $lat);
+                $lonDelta = deg2rad($stop->longitude - $lng);
+                
+                $a = sin($latDelta / 2) * sin($latDelta / 2) +
+                     cos(deg2rad($lat)) * cos(deg2rad($stop->latitude)) *
+                     sin($lonDelta / 2) * sin($lonDelta / 2);
+                     
+                $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+                
+                $stop->distance = round($earthRadius * $c, 2); // Distance in km
+                return $stop;
+            })->sortBy('distance')->values();
+        } else {
+            $stops = $stops->map(function ($stop) {
+                $stop->distance = null;
+                return $stop;
+            });
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $stops
         ]);
     }
 }
