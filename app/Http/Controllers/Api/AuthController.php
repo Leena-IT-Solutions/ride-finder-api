@@ -526,15 +526,59 @@ class AuthController extends Controller
     }
 
     /**
-     * Get list of active online drivers and their selected vehicle.
+     * Get list of active online drivers and their selected vehicle within the search radius.
      */
     public function getActiveDrivers(Request $request)
     {
-        $drivers = \App\Models\User::where('is_online', true)
+        $lat = $request->query('latitude');
+        $lng = $request->query('longitude');
+
+        $query = \App\Models\User::where('is_online', true)
             ->whereNotNull('selected_vehicle_id')
             ->where('id', '!=', $request->user()->id)
-            ->with('selectedVehicle')
-            ->get();
+            ->with('selectedVehicle');
+
+        $drivers = $query->get();
+
+        if ($lat !== null && $lng !== null) {
+            $lat = (double)$lat;
+            $lng = (double)$lng;
+
+            // Load search radius setting
+            $searchRadius = 5.0; // Default fallback
+            $filePath = storage_path('app/settings.json');
+            if (file_exists($filePath)) {
+                $data = json_decode(file_get_contents($filePath), true);
+                $searchRadius = isset($data['search_radius']) ? (double)$data['search_radius'] : $searchRadius;
+            }
+
+            $drivers = $drivers->map(function ($driver) use ($lat, $lng) {
+                if ($driver->latitude === null || $driver->longitude === null) {
+                    $driver->distance = 9999.0;
+                    return $driver;
+                }
+                
+                // Haversine formula
+                $earthRadius = 6371; // Kilometers
+                
+                $latDelta = deg2rad($driver->latitude - $lat);
+                $lonDelta = deg2rad($driver->longitude - $lng);
+                
+                $a = sin($latDelta / 2) * sin($latDelta / 2) +
+                     cos(deg2rad($lat)) * cos(deg2rad($driver->latitude)) *
+                     sin($lonDelta / 2) * sin($lonDelta / 2);
+                     
+                $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+                
+                $driver->distance = round($earthRadius * $c, 2); // Distance in km
+                return $driver;
+            })
+            ->filter(function ($driver) use ($searchRadius) {
+                return $driver->distance <= $searchRadius;
+            })
+            ->sortBy('distance')
+            ->values();
+        }
 
         return response()->json([
             'status' => 'success',
