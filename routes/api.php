@@ -20,4 +20,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/stops', [AuthController::class, 'getStops']);
     Route::post('/stops', [AuthController::class, 'storeStop']);
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    // Vehicle management routes
+    Route::post('/user/vehicles', [AuthController::class, 'addVehicle']);
+    Route::post('/user/vehicles/{id}/select', [AuthController::class, 'selectVehicle']);
 });

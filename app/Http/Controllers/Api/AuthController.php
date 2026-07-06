@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Stop;
+use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -32,6 +33,7 @@ class AuthController extends Controller
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
+        $user->load('vehicles');
 
         return response()->json([
             'access_token' => $token,
@@ -64,6 +66,7 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
+        $user->load('vehicles');
 
         return response()->json([
             'access_token' => $token,
@@ -167,8 +170,9 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'mobile_number' => 'required|string|max:15|unique:users,mobile_number,' . $user->id,
             'roles' => 'nullable|array',
-            'vehicles' => 'nullable|array',
-            'selected_vehicle_id' => 'nullable|string',
+            'selected_vehicle_id' => 'nullable|integer',
+            'profile_photo' => 'nullable|string',
+            'drivers_license_photo' => 'nullable|string',
         ]);
 
         $user->name = $request->name;
@@ -182,18 +186,83 @@ class AuthController extends Controller
             $user->roles = array_values(array_unique(array_merge($protectedRoles, $newRoles)));
         }
 
-        if ($request->has('vehicles')) {
-            $user->vehicles = $request->vehicles;
-        }
-
         if ($request->has('selected_vehicle_id')) {
             $user->selected_vehicle_id = $request->selected_vehicle_id;
         }
 
+        if ($request->has('profile_photo')) {
+            $user->profile_photo = $request->profile_photo;
+        }
+
+        if ($request->has('drivers_license_photo')) {
+            $user->drivers_license_photo = $request->drivers_license_photo;
+        }
+
         $user->save();
+        $user->load('vehicles');
 
         return response()->json([
             'message' => 'Profile updated successfully.',
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * Add a vehicle for the authenticated user.
+     */
+    public function addVehicle(Request $request)
+    {
+        $request->validate([
+            'make' => 'required|string|max:255',
+            'model' => 'required|string|max:255',
+            'number_plate' => 'required|string|max:255',
+            'capacity' => 'required|integer|min:1',
+        ]);
+
+        $user = $request->user();
+
+        $vehicle = $user->vehicles()->create([
+            'make' => $request->make,
+            'model' => $request->model,
+            'number_plate' => $request->number_plate,
+            'capacity' => $request->capacity,
+        ]);
+        // If it's the user's first vehicle, automatically set it as selected
+        if (!$user->selected_vehicle_id) {
+            $user->selected_vehicle_id = $vehicle->id;
+            $user->save();
+        }
+
+        $user->load('vehicles');
+
+        return response()->json([
+            'message' => 'Vehicle added successfully.',
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * Select active vehicle.
+     */
+    public function selectVehicle(Request $request, $id)
+    {
+        $user = $request->user();
+
+        // Check if vehicle belongs to the user
+        $vehicle = $user->vehicles()->where('id', $id)->first();
+        if (!$vehicle) {
+            return response()->json([
+                'message' => 'Vehicle not found or unauthorized.'
+            ], 404);
+        }
+
+        $user->selected_vehicle_id = $id;
+        $user->save();
+
+        $user->load('vehicles');
+
+        return response()->json([
+            'message' => 'Active vehicle updated.',
             'user' => $user
         ]);
     }

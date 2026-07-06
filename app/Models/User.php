@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-#[Fillable(['name', 'email', 'mobile_number', 'password', 'roles', 'latitude', 'longitude', 'current_location', 'vehicles', 'selected_vehicle_id'])]
+#[Fillable(['name', 'email', 'mobile_number', 'password', 'roles', 'latitude', 'longitude', 'current_location', 'vehicles', 'selected_vehicle_id', 'profile_photo', 'drivers_license_photo'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -53,7 +53,12 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'roles' => 'array',
-            'vehicles' => 'array',
         ];
     }
+
+    public function vehicles(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Vehicle::class);
+    }
 }
+

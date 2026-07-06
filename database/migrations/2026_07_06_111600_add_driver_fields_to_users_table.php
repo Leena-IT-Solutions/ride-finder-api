@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->json('vehicles')->nullable()->after('roles');
-            $table->string('selected_vehicle_id')->nullable()->after('vehicles');
+            $table->string('profile_photo')->nullable()->after('mobile_number');
+            $table->string('drivers_license_photo')->nullable()->after('profile_photo');
+            $table->unsignedBigInteger('selected_vehicle_id')->nullable()->after('roles');
         });
     }
 
@@ -23,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['vehicles', 'selected_vehicle_id']);
+            $table->dropColumn(['profile_photo', 'drivers_license_photo', 'selected_vehicle_id']);
         });
     }
 };
