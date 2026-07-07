@@ -203,7 +203,7 @@
                 <p>We enforce industry-standard security safeguards to protect your personal details, including encrypted passwords, secure HTTPS API communication, and isolated document storage. Keystore configurations are maintained securely under git protection.</p>
 
                 <h2>5. Contact Us</h2>
-                <p>If you have any questions regarding this Privacy Policy or data deletion requests, you may contact support at admin@ridefinder.com.</p>
+                <p>If you have any questions regarding this Privacy Policy or data deletion requests, you may contact support at leenaitsolutions@gmail.com.</p>
 
                 <div class="actions">
                     <a href="{{ url('/') }}" class="btn btn-outline">Back to Landing</a>
