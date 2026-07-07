@@ -16,6 +16,7 @@ class Settings extends Component
     // Maps Settings
     public $mapsPlatform = 'leaflet'; // leaflet or google
     public $googleMapsApiKey = '';
+    public $driverLocationUpdateInterval = 20;
 
     public function mount()
     {
@@ -30,6 +31,7 @@ class Settings extends Component
             $this->maintenanceMode = $data['maintenance_mode'] ?? $this->maintenanceMode;
             $this->mapsPlatform = $data['maps_platform'] ?? $this->mapsPlatform;
             $this->googleMapsApiKey = $data['google_maps_api_key'] ?? $this->googleMapsApiKey;
+            $this->driverLocationUpdateInterval = $data['driver_location_update_interval'] ?? $this->driverLocationUpdateInterval;
         }
     }
 
@@ -44,6 +46,7 @@ class Settings extends Component
             'maintenance_mode' => $this->maintenanceMode,
             'maps_platform' => $this->mapsPlatform,
             'google_maps_api_key' => $this->googleMapsApiKey,
+            'driver_location_update_interval' => (int)$this->driverLocationUpdateInterval,
         ];
 
         $filePath = storage_path('app/settings.json');

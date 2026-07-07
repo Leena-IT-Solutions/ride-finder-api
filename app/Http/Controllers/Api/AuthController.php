@@ -337,6 +337,7 @@ class AuthController extends Controller
         $user->longitude = $request->longitude;
         $user->current_location = $request->current_location;
         $user->save();
+        $user->load('vehicles');
 
         return response()->json([
             'message' => 'Location updated successfully.',
@@ -372,17 +373,20 @@ class AuthController extends Controller
     {
         $platform = 'leaflet';
         $apiKey = '';
+        $interval = 20;
 
         $filePath = storage_path('app/settings.json');
         if (file_exists($filePath)) {
             $data = json_decode(file_get_contents($filePath), true);
             $platform = $data['maps_platform'] ?? $platform;
             $apiKey = $data['google_maps_api_key'] ?? $apiKey;
+            $interval = $data['driver_location_update_interval'] ?? $interval;
         }
 
         return response()->json([
             'maps_platform' => $platform,
             'google_maps_api_key' => $apiKey,
+            'driver_location_update_interval' => (int)$interval,
         ]);
     }
 

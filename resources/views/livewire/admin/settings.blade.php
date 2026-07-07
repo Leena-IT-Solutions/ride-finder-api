@@ -64,6 +64,12 @@
                     <input type="text" id="google_maps_api_key" wire:model="googleMapsApiKey" class="form-control" placeholder="AIzaSy..." @if($mapsPlatform !== 'google') disabled style="opacity: 0.5; cursor: not-allowed;" @endif>
                 </div>
 
+                <!-- Driver Location Update Interval -->
+                <div class="form-group">
+                    <label class="form-label" for="driver_location_update_interval">Driver Location Update Interval (Seconds)</label>
+                    <input type="number" id="driver_location_update_interval" wire:model="driverLocationUpdateInterval" class="form-control" min="5" max="300" placeholder="e.g. 20">
+                </div>
+
                 <!-- Maintenance Mode -->
                 <div class="form-group" style="display: flex; flex-direction: column; justify-content: center;">
                     <label class="form-label">System Maintenance Mode</label>
