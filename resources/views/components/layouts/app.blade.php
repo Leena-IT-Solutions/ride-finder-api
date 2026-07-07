@@ -35,23 +35,28 @@
                 </div>
                 
                 <nav class="sidebar-menu">
-                    <a href="{{ route('admin.dashboard') }}" class="menu-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                        <span class="menu-item-icon">📊</span> Dashboard
-                    </a>
-                    <a href="{{ route('admin.users') }}" class="menu-item {{ request()->routeIs('admin.users') ? 'active' : '' }}">
-                        <span class="menu-item-icon">👤</span> Users
-                    </a>
-                    <a href="{{ route('admin.drivers') }}" class="menu-item {{ request()->routeIs('admin.drivers') ? 'active' : '' }}">
-                        <span class="menu-item-icon">🪪</span> Drivers
-                    </a>
-                    <a href="{{ route('admin.vehicles') }}" class="menu-item {{ request()->routeIs('admin.vehicles') ? 'active' : '' }}">
-                        <span class="menu-item-icon">🚗</span> Vehicles
-                    </a>
-                    <a href="{{ route('admin.stops') }}" class="menu-item {{ request()->routeIs('admin.stops') ? 'active' : '' }}">
-                        <span class="menu-item-icon">📍</span> Stop Locations
-                    </a>
-                    <a href="{{ route('admin.settings') }}" class="menu-item {{ request()->routeIs('admin.settings') ? 'active' : '' }}">
-                        <span class="menu-item-icon">⚙️</span> Settings
+                    @if(auth()->user()->hasAdminAccess())
+                        <a href="{{ route('admin.dashboard') }}" class="menu-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                            <span class="menu-item-icon">📊</span> Dashboard
+                        </a>
+                        <a href="{{ route('admin.users') }}" class="menu-item {{ request()->routeIs('admin.users') ? 'active' : '' }}">
+                            <span class="menu-item-icon">👥</span> Users
+                        </a>
+                        <a href="{{ route('admin.drivers') }}" class="menu-item {{ request()->routeIs('admin.drivers') ? 'active' : '' }}">
+                            <span class="menu-item-icon">🪪</span> Drivers
+                        </a>
+                        <a href="{{ route('admin.vehicles') }}" class="menu-item {{ request()->routeIs('admin.vehicles') ? 'active' : '' }}">
+                            <span class="menu-item-icon">🚗</span> Vehicles
+                        </a>
+                        <a href="{{ route('admin.stops') }}" class="menu-item {{ request()->routeIs('admin.stops') ? 'active' : '' }}">
+                            <span class="menu-item-icon">📍</span> Stop Locations
+                        </a>
+                        <a href="{{ route('admin.settings') }}" class="menu-item {{ request()->routeIs('admin.settings') ? 'active' : '' }}">
+                            <span class="menu-item-icon">⚙️</span> Settings
+                        </a>
+                    @endif
+                    <a href="{{ route('user.profile') }}" class="menu-item {{ request()->routeIs('user.profile') ? 'active' : '' }}">
+                        <span class="menu-item-icon">👤</span> My Profile
                     </a>
                 </nav>
 
@@ -89,6 +94,7 @@
                         @elseif(request()->routeIs('admin.vehicles')) Vehicles
                         @elseif(request()->routeIs('admin.stops')) Stop Locations
                         @elseif(request()->routeIs('admin.settings')) Portal Settings
+                        @elseif(request()->routeIs('user.profile')) My Profile
                         @else Portal
                         @endif
                     </div>

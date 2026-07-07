@@ -34,20 +34,14 @@ class Login extends Component
 
         // Attempt login
         if (Auth::attempt([$fieldType => $this->login_input, 'password' => $this->password], $this->remember)) {
-            // Check if the user is an admin or manager
-            if (!$user->hasAdminAccess()) {
-                Auth::logout();
-                session()->invalidate();
-                session()->regenerateToken();
-
-                session()->flash('error', 'Access Denied: Only Admin or Manager roles are permitted to access this panel.');
-                return;
-            }
-
             // Regenerate session
             session()->regenerate();
 
-            return redirect()->intended(route('admin.dashboard'));
+            if ($user->hasAdminAccess()) {
+                return redirect()->intended(route('admin.dashboard'));
+            } else {
+                return redirect()->intended(route('user.profile'));
+            }
         }
 
         $this->addError('password', 'Incorrect password.');
