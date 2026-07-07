@@ -5,16 +5,11 @@ use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use Illuminate\Support\Facades\Route;
 
-// Show landing page on root or redirect based on user role
+// Show landing page on root
 Route::get('/', function () {
-    if (auth()->check()) {
-        if (auth()->user()->hasAdminAccess()) {
-            return redirect()->route('admin.dashboard');
-        }
-        return redirect()->route('user.profile');
-    }
     return view('welcome');
 })->name('welcome');
+
 
 // Privacy Policy page
 Route::get('/privacy-policy', function () {
