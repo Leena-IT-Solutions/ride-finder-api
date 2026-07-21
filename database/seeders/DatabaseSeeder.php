@@ -19,12 +19,12 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        // Seed Sandeep Rathod if doesn't exist
-        User::firstOrCreate(
-            ['email' => 'sandeep198558@gmail.com'],
+        // Seed Sandeep Rathod by mobile_number to prevent duplicate constraints
+        User::updateOrCreate(
+            ['mobile_number' => '9664588677'],
             [
                 'name' => 'Sandeep Rathod',
-                'mobile_number' => '9664588677',
+                'email' => 'sandeep198558@gmail.com',
                 'roles' => ['admin', 'manager', 'driver', 'user'],
                 'password' => Hash::make('password'),
                 'latitude' => 12.971598,
@@ -32,12 +32,12 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // Seed Leena Adam if doesn't exist
-        User::firstOrCreate(
-            ['email' => 'leenaadam28@gmail.com'],
+        // Seed Leena Adam by mobile_number to prevent duplicate constraints
+        User::updateOrCreate(
+            ['mobile_number' => '9769409405'],
             [
                 'name' => 'Leena Adam',
-                'mobile_number' => '9769409405',
+                'email' => 'leenaadam28@gmail.com',
                 'roles' => ['admin', 'manager', 'user'],
                 'password' => Hash::make('password'),
             ]
