@@ -4,6 +4,7 @@ namespace App\Livewire\User;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
@@ -97,6 +98,16 @@ class Profile extends Component
         }
 
         // Delete user relations and user
+        Log::warning('User Account Deleted via Web Profile', [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'mobile_number' => $user->mobile_number,
+            'ip' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+            'timestamp' => now()->toDateTimeString(),
+        ]);
+
         $user->vehicles()->delete();
         $user->delete();
 

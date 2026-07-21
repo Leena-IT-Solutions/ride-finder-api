@@ -8,6 +8,7 @@ use App\Models\Stop;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -309,6 +310,16 @@ class AuthController extends Controller
     {
         $user = $request->user();
         
+        Log::warning('User Account Deleted via API', [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'mobile_number' => $user->mobile_number,
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'timestamp' => now()->toDateTimeString(),
+        ]);
+
         // Revoke all tokens
         $user->tokens()->delete();
         
