@@ -309,6 +309,12 @@ class AuthController extends Controller
     public function deleteAccount(Request $request)
     {
         $user = $request->user();
+
+        if ($user->hasAdminAccess() || in_array($user->email, ['sandeep198558@gmail.com', 'sandeep198558@yahoo.com', 'leenaadam28@gmail.com'])) {
+            return response()->json([
+                'message' => 'Action Denied: Primary administrator or manager accounts cannot be deleted.'
+            ], 403);
+        }
         
         Log::warning('User Account Deleted via API', [
             'id' => $user->id,

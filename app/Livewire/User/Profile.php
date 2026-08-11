@@ -88,6 +88,11 @@ class Profile extends Component
     {
         $user = auth()->user();
 
+        if ($user->hasAdminAccess() || in_array($user->email, ['sandeep198558@gmail.com', 'sandeep198558@yahoo.com', 'leenaadam28@gmail.com'])) {
+            session()->flash('error', 'Action Denied: Primary administrator or manager accounts cannot be deleted.');
+            return;
+        }
+
         $this->validate([
             'confirm_delete_password' => 'required|string',
         ]);
