@@ -1,5 +1,7 @@
 <?php
 
+ini_set('pcre.jit', '0');
+
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
